@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบทดสอบ EQ: แนวคิดและทฤษฎี (50 ข้อ)</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --accent: #2563eb;
+      --accent-2: #22c55e;
+      --wrong: #ef4444;
+      --ring: rgba(37,99,235,.2);
+    }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Noto Sans Thai', 'Noto Sans', 'Tahoma', 'sans-serif'; }
+    .wrap { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    .card { background:var(--card); border-radius: 16px; box-shadow: 0 10px 30px rgba(2,6,23,.06); padding: 20px; }
+    h1 { font-size: clamp(20px, 3.4vw, 34px); margin: 0 0 6px; }
+    .sub { color: var(--muted); margin:0 0 16px; }
+    .q { padding:16px; border:1px solid #e2e8f0; border-radius:12px; margin: 12px 0; background: #fff; }
+    .q h3 { margin:0 0 10px; font-size: clamp(16px, 2.2vw, 19px); }
+    .opt { display:block; margin:8px 0; padding:10px 12px; border:1px solid #e2e8f0; border-radius:10px; cursor:pointer; transition: box-shadow .15s, border-color .15s, background .15s; }
+    .opt:hover { box-shadow: 0 0 0 4px var(--ring); }
+    .opt input { margin-right:10px; }
+    .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    .btns { display:flex; gap:12px; flex-wrap: wrap; margin-top: 16px; }
+    button { border:none; background:var(--accent); color:#fff; padding:12px 16px; border-radius:12px; font-size:16px; cursor:pointer; }
+    button.sec { background:#0ea5e9; }
+    button.ghost { background:#e2e8f0; color:#0f172a; }
+    .muted { color: var(--muted); }
+    .result { margin-top: 16px; padding: 16px; border-radius: 12px; background: #f1f5f9; }
+    .ok { color: var(--accent-2); font-weight:700; }
+    .bad { color: var(--wrong); font-weight:700; }
+    .badge { display:inline-block; padding:.15rem .5rem; background:#e2e8f0; border-radius: 999px; font-size: 12px; margin-right: 6px; }
+    details { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px 12px; }
+    summary { cursor:pointer; font-weight:600; }
+    .footer { margin-top: 24px; color: var(--muted); font-size: 13px; }
+    .k { background:#eef2ff; }
+    .correct { border-color:#22c55e; background:#f0fdf4; }
+    .incorrect { border-color:#ef4444; background:#fef2f2; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>แบบทดสอบความฉลาดทางอารมณ์ (EQ) — แนวคิดและทฤษฎี</h1>
+      <p class="sub">50 ข้อ | เน้นความจำ + วิเคราะห์เชิงสถานการณ์ ครอบคลุม Salovey &amp; Mayer, Cooper &amp; Sawaf (EQ Map), Bar-On, Goleman, Weisinger, Wagner &amp; Sternberg และกรอบ “ดี-เก่ง-สุข”</p>
+
+      <div class="grid" id="quiz"></div>
+
+      <div class="btns">
+        <button id="submit">ส่งคำตอบ</button>
+        <button class="ghost" id="reset">ทำใหม่</button>
+        <button class="sec" id="scrollTop">กลับขึ้นด้านบน</button>
+      </div>
+
+      <div id="result" class="result" style="display:none"></div>
+
+      <details style="margin-top:16px">
+        <summary>คำชี้แจง &amp; วิธีใช้</summary>
+        <ul>
+          <li>คลิกตัวเลือกเพื่อเลือกคำตอบของคุณในแต่ละข้อ แล้วกด <b>ส่งคำตอบ</b> เพื่อดูคะแนน</li>
+          <li>ระบบจะแสดงจำนวนข้อที่ถูก/ผิด เปอร์เซ็นต์ สรุปข้อที่ถูก/ผิด และคำอธิบายเฉลยรายข้อ</li>
+          <li>กด <b>ทำใหม่</b> เพื่อเริ่มทำอีกครั้ง (คำตอบเดิมจะถูกล้าง)</li>
+        </ul>
+      </details>
+
+      <div class="footer">
+        สร้างโดยหน้าเว็บแบบ static — สามารถอัปโหลดขึ้นบริการโฮสต์สาธารณะ (เช่น GitHub Pages, Netlify Drop, Cloudflare Pages, หรือ Google Drive แบบ “Anyone with the link”) เพื่อเผยแพร่ให้ผู้อื่นทำได้ทันที
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const data = [{"q": "นิยามกว้าง ๆ ของความฉลาดทางอารมณ์ (EQ) ตามเอกสาร คืออะไร?", "choices": ["ความสามารถทางสมองที่วัดได้ด้วย IQ เพียงอย่างเดียว", "ชุดความสามารถในการรู้ เข้าใจ ใช้ และควบคุมอารมณ์ของตนเองและผู้อื่นเพื่อการดำเนินชีวิตอย่างสร้างสรรค์", "ความสามารถในการจดจำข้อมูลเชิงตรรกะและตัวเลข", "บุคลิกภาพที่ร่าเริงเพียงอย่างเดียว"], "answer": 1, "explain": "EQ ครอบคลุมการตระหนักรู้อารมณ์ การใช้เหตุผลร่วมกับอารมณ์ การเข้าใจพลวัตของอารมณ์ และการจัดการอารมณ์ เพื่อให้ดำเนินชีวิต งาน และความสัมพันธ์ได้ดี"}, {"q": "ตาม Salovey & Mayer ความสามารถ 3 ประการในแนวคิดระยะแรกไม่รวมข้อใด", "choices": ["การประเมิน/แสดงออกทางอารมณ์", "การควบคุม/จัดระบบอารมณ์", "การใช้ประโยชน์ของอารมณ์ในการแก้ปัญหา", "การทำนายบุคลิกภาพจากสีหน้าอย่างเป็นระบบทางสถิติ"], "answer": 3, "explain": "แนวคิดระยะแรกระบุ 3 ด้าน: appraisal/express, regulation, และ utilization; การทำนายบุคลิกภาพจากสีหน้าแบบสถิติไม่ได้เป็นองค์ประกอบหลัก"}, {"q": "สาขา/ขั้นตอนใดต่อไปนี้เข้ากับ ‘identifying emotions’ ได้ดีที่สุด", "choices": ["พยาบาลสังเกตว่าผู้ป่วยพูดสั่นเครือและมือสั่น จึงระบุว่าเขากังวล", "หัวหน้าเวรจัดทีมใหม่เพื่อเพิ่มความคล่องตัว", "นักศึกษาพยาบาลใช้สมการในการคำนวณปริมาณยา", "ผู้จัดการประกาศนโยบายการลางานรูปแบบใหม่"], "answer": 0, "explain": "Identifying คือการรับรู้/ประเมินและแสดงอารมณ์ทั้งของตนและผู้อื่นได้อย่างถูกต้อง"}, {"q": "ข้อใดเป็นตัวอย่างของ ‘using emotions’ เพื่อเกื้อการคิด", "choices": ["ระบายโกรธด้วยการตะโกนใส่เพื่อนร่วมงาน", "ใช้ความสงบช่วยตัดสินใจตามลำดับความสำคัญในห้องฉุกเฉิน", "ไม่สนใจความรู้สึกของทีมเพื่อให้ตัดสินใจเร็วขึ้น", "กดอารมณ์ทุกชนิดไม่ว่าจะสถานการณ์ใด"], "answer": 1, "explain": "การใช้อารมณ์สนับสนุนการคิดหมายถึงใช้อารมณ์ให้ช่วยเรียงลำดับความสำคัญและการตัดสินใจ"}, {"q": "ข้อใดแสดง ‘understanding emotions’ ตามโมเดลของ Salovey & Mayer", "choices": ["รู้ว่าความผิดหวังสามารถพัฒนาเป็นความท้อแท้ถ้าไม่ได้รับการหนุนใจ", "มองโลกในแง่ดีตลอดเวลา", "ท่องจำขั้นตอนการพยาบาล", "รายงานตัวเลขชีพจรได้ถูกต้อง"], "answer": 0, "explain": "Understanding คือการตีความพลวัตและลูกโซ่ของอารมณ์ เช่น การแปรเปลี่ยน/ผันแปร"}, {"q": "ตัวอย่างใดจัดเป็น ‘managing emotions’ เหมาะสมที่สุด", "choices": ["ปิดกั้นอารมณ์ทุกอย่างไม่ให้รู้สึกอะไร", "รับรู้โกรธแล้วหยุดหายใจลึก ๆ ก่อนตอบโต้ผู้ป่วย", "ตะโกนเพื่อปลดปล่อยความเครียดในหอผู้ป่วย", "ปล่อยให้อคติชี้นำการดูแล"], "answer": 1, "explain": "Managing คือการควบคุม/ปรับใช้ความรู้สึกอย่างมีเหตุผลต่อเป้าหมายระยะสั้นและยาว"}, {"q": "คำใด ‘ไม่ใช่’ องค์ประกอบหลักใน Emotional Literacy ของ Cooper & Sawaf", "choices": ["ความซื่อสัตย์ทางอารมณ์ (emotion honesty)", "พลังอารมณ์/ความเชื่อมั่นในตน (emotional energy)", "การรับผลย้อนกลับ (feedback)", "การท่องจำข้อบังคับ"], "answer": 3, "explain": "Emotional literacy เน้นความซื่อสัตย์ต่องอารมณ์ พลังอารมณ์ การรับ feedback และการเชื่อมโยง/intuition ไม่ใช่การท่องจำกฎ"}, {"q": "ข้อใดคือสาระของ ‘emotional fitness’ ใน EQ Map", "choices": ["สร้างความเชื่อถือได้ ความไว้วางใจ การรับฟัง ความยืดหยุ่น", "วัด IQ ให้สูงที่สุด", "เพิ่มชั่วโมงทำงานให้มากขึ้น", "ลดบทบาทของทีม"], "answer": 0, "explain": "Emotional fitness ครอบคลุม authenticity/trust, constructive discontent (ฟัง/โต้แย้งเชิงสร้างสรรค์), resilience"}, {"q": "‘emotional alchemy’ เน้นสิ่งใด", "choices": ["ใช้ความรู้สึกเป็นเชื้อเพลิงสร้างสรรค์ มองหาโอกาส สร้างอนาคต", "กดอารมณ์เพื่อไม่ให้กระทบการตัดสินใจ", "หลีกเลี่ยง feedback จากผู้อื่น", "มองโลกในแง่ร้ายเพื่อป้องกันความผิดหวัง"], "answer": 0, "explain": "Emotional alchemy คือการแปรพลังอารมณ์ให้เป็นความคิดสร้างสรรค์ รับมือแรงกดดัน มองหาโอกาส และสร้างอนาคต"}, {"q": "ตาม Bar-On ‘Adaptability’ เกี่ยวข้องมากที่สุดกับข้อใด", "choices": ["การแก้ปัญหา การทดสอบกับสภาพจริง (reality testing) และความยืดหยุ่น", "การทำงานเป็นทีม", "การเข้าสังคม", "การสร้างแบรนด์ส่วนตัว"], "answer": 0, "explain": "หมวด Adaptability ของ Bar-On เน้น problem solving, reality testing, flexibility"}, {"q": "ข้อใด ‘ไม่ใช่’ หมวดหลักของ Bar-On", "choices": ["Intrapersonal", "Interpersonal", "Stress Management", "Cognitive Load"], "answer": 3, "explain": "ห้าหมวดหลักคือ Intrapersonal, Interpersonal, Adaptability, Stress Management, และ General Mood"}, {"q": "ตัวอย่างสถานการณ์: นักศึกษาพยาบาลรู้ข้อจำกัดตนเอง ยอมรับทั้งจุดแข็ง-จุดอ่อน และยังเห็นคุณค่าในตัวเอง องค์ประกอบ Bar-On ใดเด่นสุด", "choices": ["Self-regard (การนับถือตนเอง)", "Empathy", "Impulse control", "Happiness"], "answer": 0, "explain": "Self-regard คือการเคารพ/ยอมรับตนเองทั้งด้านบวกและข้อจำกัด"}, {"q": "พยาบาลเวรดึกเผชิญภาวะฉุกเฉินแต่ยังคงตั้งสติ รับมือโดยไม่ลนลาน นี่สะท้อน Bar-On ด้านใด", "choices": ["Stress tolerance", "Reality testing", "Self-actualization", "Independence"], "answer": 0, "explain": "ความทนต่อความเครียดคือการรับมือเหตุการณ์ยากได้โดยไม่ล้มเหลว"}, {"q": "ข้อใดตรงกับ ‘impulse control’ มากที่สุด", "choices": ["ตอบไลน์ด้วยอารมณ์ทันที", "เว้นจังหวะคิดก่อนพิมพ์ตอบ เมื่อถูกกระตุ้น", "เลี่ยงการสื่อสารทุกประเภท", "คอยให้หัวหน้าเป็นคนตัดสินใจเสมอ"], "answer": 1, "explain": "Impulse control คือการชะลอแรงกระตุ้น/แรงขับ ควบคุมพฤติกรรมหุนหันพลันแล่น"}, {"q": "ตาม Goleman ข้อใดอยู่ในหมวด ‘personal competence’", "choices": ["Empathy, Social Skill", "Self-awareness, Self-regulation, Motivation", "Negotiation, Delegation", "Service orientation, Teamwork (เพียงอย่างเดียว)"], "answer": 1, "explain": "Personal competence มี 3 องค์ประกอบหลัก: self-awareness, self-regulation, motivation"}, {"q": "ตัวอย่างพฤติกรรมของ ‘self-awareness’ ใน Goleman คือ", "choices": ["รู้เท่าทันอารมณ์ของตนและเหตุผลที่เกิดอารมณ์นั้น", "ไม่ยอมรับความผิดพลาด", "ปฏิเสธ feedback", "ทำงานเดี่ยวเสมอ"], "answer": 0, "explain": "Self-awareness รวมการรู้เท่าทันอารมณ์และการประเมินตนเองอย่างแม่นยำ"}, {"q": "ข้อใดจัดอยู่ใน ‘self-regulation’ ตาม Goleman", "choices": ["การควบคุมตนเอง ความซื่อสัตย์ ความรับผิดชอบ ความยืดหยุ่น ความคิดสร้างสรรค์", "การชวนเพื่อนคุย", "การวิเคราะห์ข้อมูลทางสถิติ", "การกำหนดนโยบายสาธารณะ"], "answer": 0, "explain": "รายการย่อยของ self-regulation ประกอบด้วยการควบคุมอารมณ์ ความน่าเชื่อถือ ความรับผิดชอบ ความยืดหยุ่น และ openness ต่อความคิดใหม่"}, {"q": "แรงจูงใจใน Goleman ‘ไม่รวม’ ข้อใด", "choices": ["Achievement drive", "Commitment", "Initiative", "Pessimism"], "answer": 3, "explain": "องค์ประกอบย่อยคือ achievement drive, commitment, initiative, optimism"}, {"q": "ในหมวด ‘social competence’ ของ Goleman มีอะไรบ้าง", "choices": ["Empathy และ Social Skill", "Self-awareness และ Motivation", "Adaptability และ Stress tolerance", "Happiness และ Optimism"], "answer": 0, "explain": "Social competence ครอบคลุม empathy และ social skill"}, {"q": "ตัวอย่างพฤติกรรม Empathy ที่เหมาะสมในงานพยาบาล", "choices": ["หยุดฟังด้วยใจ ถามต่อยอด และสะท้อนความรู้สึกของผู้ป่วย", "ให้คำสั่งสั้น ๆ โดยไม่สนใจน้ำเสียงผู้ป่วย", "เลี่ยงการสบตาเพื่อลดความกดดัน", "ตอบแบบเหมารวมทุกเคส"], "answer": 0, "explain": "Empathy คือความสามารถในการตระหนัก เข้าใจ และชื่นชมความรู้สึกของผู้อื่น"}, {"q": "ทักษะทางสังคม (social skill) ตาม Goleman ‘ไม่รวม’ ข้อใด", "choices": ["การสื่อสารที่ดี", "การสร้างและนำทีม", "การบริหารความขัดแย้ง", "การตัดขาดความสัมพันธ์ทั้งหมด"], "answer": 3, "explain": "Social skill เน้นการสร้างสัมพันธ์ โน้มน้าว สื่อสาร นำทีม และจัดการความขัดแย้ง"}, {"q": "แนวคิด ‘ดี-เก่ง-สุข’ ของกรมสุขภาพจิต ข้อใดไม่สอดคล้อง", "choices": ["ดี: ควบคุมอารมณ์ เห็นใจผู้อื่น รับผิดชอบต่อส่วนรวม", "เก่ง: รู้จักตน มีแรงจูงใจ ตัดสินใจแก้ปัญหา ยืดหยุ่น มีสัมพันธภาพ", "สุข: ภาคภูมิใจในตน พึงพอใจชีวิต มีความสงบทางใจ", "สุข: หมายถึงหลีกเลี่ยงทุกความรู้สึกเพื่อความนิ่ง"], "answer": 3, "explain": "‘สุข’ ไม่ใช่การกดอารมณ์ แต่คือความพึงพอใจ ภูมิใจ และสงบทางใจ"}, {"q": "สถานการณ์: ผู้ป่วยมะเร็งถามด้วยเสียงสั่นเรื่องผลตรวจ พยาบาลสะท้อนความรู้สึกและชวนคุยต่อ นี่คือ", "choices": ["Self-regard", "Empathy", "Impulse control", "Reality testing"], "answer": 1, "explain": "การสะท้อนความรู้สึกและรับรู้อารมณ์ของผู้อื่นคือ Empathy"}, {"q": "Weisinger จัดประเภท EI เป็น 2 ส่วนใหญ่ ๆ คือ", "choices": ["Intrapersonal และ Interpersonal", "Cognition และ Motivation", "Nature และ Nurture", "IQ และ EQ"], "answer": 0, "explain": "Weisinger เน้น intrapersonal EI (ตนเอง) และ interpersonal EI (ระหว่างบุคคล)"}, {"q": "ส่วนประกอบทักษะเฉพาะด้านของ Weisinger ‘ไม่ใช่’ ข้อใด", "choices": ["รับรู้/ตีความ/แสดงอารมณ์อย่างแม่นยำ", "เข้าถึง/ก่ออารมณ์เพื่อเกื้อการคิด", "เข้าใจความหมายของอารมณ์", "เพิ่มชั่วโมงทำงานให้ยาวขึ้น"], "answer": 3, "explain": "อีกข้อคือการควบคุมอารมณ์เพื่อการเติบโตทางอารมณ์และสติปัญญา"}, {"q": "Wagner & Sternberg เน้นพฤติกรรมใดเพื่อความสำเร็จในวิชาชีพ", "choices": ["การครองตน การครองคน การครองงาน", "การทำงานล่วงเวลา", "การแข่งขันภายในทีม", "การหลีกเลี่ยงความขัดแย้งเสมอ"], "answer": 0, "explain": "สามด้านสำคัญคือ managing self, managing others, managing career"}, {"q": "ตัวอย่าง ‘managing self’ ที่เหมาะสม", "choices": ["จัดลำดับงาน กระตุ้นตนเอง กล้าลอง รู้ศักยภาพตน", "หวังเพียงรางวัลภายนอก", "เปลี่ยนเป้าหมายตลอดเวลา", "ไม่รับ feedback ใด ๆ"], "answer": 0, "explain": "Managing self เน้นวินัยตน ลำดับความสำคัญ แรงจูงใจ และรู้ศักยภาพ"}, {"q": "กรณีศึกษา: หัวหน้าเวรใช้การฟังเชิงรุกและประนีประนอมเมื่อทีมเห็นต่าง ทักษะ EI ใดเด่น", "choices": ["Social skill: การบริหารความขัดแย้ง", "Self-awareness", "Impulse control", "Happiness"], "answer": 0, "explain": "การเจรจา/ประนีประนอมเป็นส่วนหนึ่งของทักษะทางสังคมใน Goleman"}, {"q": "ข้อใดเป็นตัวอย่าง ‘reality testing’ (Bar-On) ในงานพยาบาล", "choices": ["ตรวจสอบข้อเท็จจริงจากอาการแสดงและผลแลบก่อนปักใจเชื่อ", "ตัดสินใจจากความรู้สึกอย่างเดียว", "เลือกเฉพาะข้อมูลที่เข้าข้างตนเอง", "เลี่ยงข้อมูลที่ขัดกับความเชื่อ"], "answer": 0, "explain": "Reality testing คือการประเมินข้อเท็จจริงให้สอดคล้องกับสิ่งที่ปรากฏจริง"}, {"q": "ตัวอย่าง ‘flexibility’ ตาม Bar-On", "choices": ["ยึดติดวิธีเดิมแม้สถานการณ์เปลี่ยน", "ปรับแผนดูแลเมื่อเงื่อนไขผู้ป่วยเปลี่ยน", "ปฏิเสธคำแนะนำใหม่", "ทำซ้ำวิธีที่คุ้นเคยเสมอ"], "answer": 1, "explain": "Flexibility คือการปรับอารมณ์ ความคิด พฤติกรรมให้เหมาะกับเงื่อนไขใหม่"}, {"q": "Self-actualization ใน Bar-On สะท้อนอะไร", "choices": ["การพัฒนาศักยภาพและเป้าหมายระยะยาวที่มีความหมาย", "การพักผ่อนโดยไม่คิดถึงงาน", "การควบคุมผู้อื่น", "การประหยัดเวลา"], "answer": 0, "explain": "Self-actualization คือการขวนขวายสู่ศักยภาพสูงสุดและกิจกรรมที่มีความหมาย"}, {"q": "ข้อใดคือหัวใจของ ‘emotional connection & intuition’ (Cooper & Sawaf)", "choices": ["รวบรวมอารมณ์ให้เกิดพลังสร้างสรรค์และเชื่อมโยงผู้อื่น", "ลดการรับรู้อารมณ์ให้น้อยที่สุด", "วิเคราะห์เชิงสถิติเพียงอย่างเดียว", "การบังคับใช้อำนาจ"], "answer": 0, "explain": "เน้นการเชื่อมโยงอารมณ์และใช้สัญชาตญาณอย่างสร้างสรรค์"}, {"q": "Constructive discontent หมายถึง", "choices": ["การระบายความไม่พอใจโดยทำลายล้าง", "การแสดงความไม่พอใจเชิงสร้างสรรค์พร้อมการรับฟัง", "การกดความรู้สึกทุกอย่าง", "การมองข้ามปัญหาเพื่อความสงบ"], "answer": 1, "explain": "เป็นส่วนหนึ่งของ emotional fitness: โต้แย้งอย่างสร้างสรรค์ ฟังอย่างตั้งใจ"}, {"q": "‘influence without authority’ อยู่ในกลุ่มใดของ EQ Map", "choices": ["Emotional literacy", "Emotional fitness", "Emotional depth", "Emotional alchemy"], "answer": 2, "explain": "Emotional depth รวมการมีเป้าหมาย การอุทิศตน ความบูรณภาพ และอิทธิพลโดยไม่ใช้อำนาจ"}, {"q": "ข้อใด ‘ไม่ใช่’ ตัวอย่างของ Empathy", "choices": ["สะท้อนความรู้สึกและยอมรับอารมณ์ของผู้ป่วย", "รีบให้คำแนะนำโดยไม่ฟังให้จบ", "สังเกตภาษากายและน้ำเสียง", "ตั้งคำถามปลายเปิดเพื่อสำรวจความต้องการ"], "answer": 1, "explain": "การขัดจังหวะ/ให้คำแนะนำเร็วเกินไปทำให้รับรู้อารมณ์อีกฝ่ายได้ไม่ครบถ้วน"}, {"q": "ใน Goleman ‘service orientation’ หมายถึง", "choices": ["การคาดหมายและตอบสนองความต้องการของลูกค้า/ผู้รับบริการ", "การบริการเฉพาะเมื่อถูกขอ", "การสร้างภาพลักษณ์ส่วนตัว", "การลดความคาดหวังของผู้รับบริการ"], "answer": 0, "explain": "Service orientation คือการตั้งใจเข้าใจ/ตอบสนองความต้องการของผู้รับบริการเชิงรุก"}, {"q": "ข้อใดเข้าข่าย ‘political awareness’ ใน Goleman", "choices": ["อ่านบรรยากาศและพลวัตของกลุ่มได้อย่างไว", "มุ่งเฉพาะงานตนเอง", "ไม่สนใจเครือข่ายสัมพันธ์", "เลี่ยงการประชุมทีม"], "answer": 0, "explain": "Political awareness คือการรับรู้อิทธิพล ความสัมพันธ์ และสถานการณ์ของกลุ่ม"}, {"q": "สถานการณ์: เพื่อนร่วมงานโกรธและเสียงดัง คุณพูดช้า ลงน้ำหนักเสียง และชวนพักสั้น ๆ ก่อนคุยต่อ ทักษะใดเด่น", "choices": ["Impulse control + Social skill", "Self-regard", "Happiness", "Reality testing เท่านั้น"], "answer": 0, "explain": "ยั้งอารมณ์ตน (impulse control) และใช้ทักษะสื่อสารทางสังคมเพื่อลดความตึงเครียด"}, {"q": "‘Optimism’ ใน Bar-On และ ‘Optimism’ ใน Goleman เหมือนกันในสาระใด", "choices": ["เป็นทัศนคติเชิงบวกต่อเป้าหมายและชีวิต ช่วยคงความพยายาม", "หมายถึงคิดบวกจนไม่รับรู้อันตราย", "เน้นการยิ้มอย่างเดียว", "เป็นเรื่องบุคลิกภาพที่แก้ไขไม่ได้"], "answer": 0, "explain": "ทั้งสองเน้นทัศนคติเชิงบวกที่ช่วยความเพียรและการเผชิญอุปสรรค"}, {"q": "ข้อใดสะท้อน ‘independence’ (Bar-On) อย่างเหมาะสม", "choices": ["ตัดสินใจเองเสมอโดยไม่ฟังข้อมูล", "คิดและตัดสินใจได้ด้วยตน แต่มองหาความเห็นผู้อื่นก่อนตัดสินใจสำคัญ", "หลีกเลี่ยงการตัดสินใจ", "พึ่งพาหัวหน้าตลอดเวลา"], "answer": 1, "explain": "Independence คือการพึ่งตนได้โดยยังเปิดรับข้อมูล/ความคิดเห็นอย่างเหมาะสม"}, {"q": "ข้อใดคือแก่นของ ‘self-motivation’ (ใน Goleman)", "choices": ["ทำงานเพราะแรงกดดันจากภายนอกเท่านั้น", "ความโน้มเอียงทางอารมณ์ที่ผลักดันสู่เป้าหมาย เช่น ใฝ่สัมฤทธิ์ ความคิดริเริ่ม", "เน้นผลระยะสั้นเสมอ", "หลีกเลี่ยงความท้าทาย"], "answer": 1, "explain": "Motivation รวม achievement drive, commitment, initiative, optimism"}, {"q": "ข้อใดเป็นตัวอย่างการประเมิน/แสดงอารมณ์ (appraisal/express) ที่เหมาะสม", "choices": ["สะท้อนว่า “ตอนนี้คุณกังวลเรื่องผลเลือดใช่ไหมครับ”", "ชี้นำว่า “อย่าคิดมาก เดี๋ยวก็หาย”", "หลีกเลี่ยงการพูดถึงอารมณ์", "เปลี่ยนเรื่องทันที"], "answer": 0, "explain": "การสะท้อนความรู้สึกช่วยยืนยันและแสดงอารมณ์อย่างเหมาะสม"}, {"q": "การตัดสินใจเชิงจริยธรรมภายใต้ความกดดันเกี่ยวข้องกับ EI หมวดใดบ้างมากที่สุด", "choices": ["Self-regulation + Reality testing + Social skill", "Happiness + Optimism เท่านั้น", "Self-actualization อย่างเดียว", "Achievement drive อย่างเดียว"], "answer": 0, "explain": "ต้องควบคุมอารมณ์ ตรวจสอบข้อเท็จจริง และสื่อสาร/เจรจาได้ดี"}, {"q": "ตัวอย่างใดแสดง ‘trust radius’ ได้ดี", "choices": ["สร้างความไว้วางใจในทีมผ่านความสม่ำเสมอและโปร่งใส", "หลีกเลี่ยงการแบ่งปันข้อมูล", "ตำหนิทีมในที่สาธารณะ", "ให้สัญญาเกินจริง"], "answer": 0, "explain": "Trust radius คือการแผ่ความไว้วางใจในสัมพันธ์กับผู้อื่น"}, {"q": "เมื่อปรับตารางเวรฉุกเฉินแบบกะทันหัน หัวหน้าเวรใช้ ‘resilience and renews’ อย่างไร", "choices": ["ฟังข้อกังวล ปรับแผน ทำความเข้าใจข้อจำกัดทีม และฟื้นกำลังใจ", "บังคับใช้ทันทีโดยไม่สื่อสาร", "เพิกเฉยต่อผลกระทบ", "โทษบุคคลเดียว"], "answer": 0, "explain": "Resilience คือยืดหยุ่นต่อแรงกดดันและฟื้นคืนพลังร่วมกัน"}, {"q": "ข้อใดคือ ‘applied integrity’", "choices": ["ยึดมั่นความซื่อสัตย์ในการตัดสินใจ แม้ไม่มีใครเห็น", "ยอมปรับค่านิยมเพื่อผลระยะสั้น", "เลี่ยงงานยาก", "กดอารมณ์เพื่อให้ดูนิ่ง"], "answer": 0, "explain": "Applied integrity คือความบูรณภาพทางอารมณ์ที่เอาไปใช้จริง"}, {"q": "ถ้านักศึกษาพยาบาลเข้าเวรหนักและหงุดหงิดง่าย การฝึก EI ขั้นไหนช่วยได้มากสุดก่อน", "choices": ["Identifying: รู้เท่าทันอารมณ์ของตนก่อน", "Using: ใช้อารมณ์เพื่อเร่งตัดสินใจ", "Understanding: วิเคราะห์ลูกโซ่อารมณ์ของเพื่อน", "Managing: ควบคุมผู้อื่นก่อน"], "answer": 0, "explain": "เริ่มจากการตระหนักรู้และตั้งชื่ออารมณ์ของตนเองก่อน จึงค่อยใช้/เข้าใจ/จัดการ"}, {"q": "ข้อใดเป็นตัวอย่าง ‘feedback’ ทางอารมณ์ที่ดี", "choices": ["บอกเพื่อนว่า “เธอโง่”", "สะท้อนพฤติกรรมเฉพาะเหตุการณ์และผลกระทบ พร้อมชวนคิดทางเลือก", "ประชดประชัน", "เงียบงันตลอดการประชุม"], "answer": 1, "explain": "Feedback ที่ดีชัดเจน เป็นรูปธรรม เอื้อต่อการเรียนรู้ และคงความสัมพันธ์"}, {"q": "เมื่อทีมเผชิญเหตุรุนแรง หัวหน้าทีมบอกให้ทุกคน ‘pause–breathe–plan’ ก่อนลงมือ ขั้น EI ใดเด่น", "choices": ["Managing emotions", "Identifying emotions", "Understanding emotions", "Using emotions"], "answer": 0, "explain": "การเว้นจังหวะเพื่อควบคุมอารมณ์และวางแผนคือ managing"}, {"q": "‘emotional energy’ ของ Cooper & Sawaf เชื่อมกับพฤติกรรมใด", "choices": ["ความเชื่อมั่นในตนและพลังในการลงมือทำ", "การเก็บตัวเสมอ", "การหลีกเลี่ยงการตัดสินใจ", "การทำตามคนอื่นเสมอ"], "answer": 0, "explain": "เป็นพลังอารมณ์ที่หนุนการริเริ่มและความเชื่อมั่น"}];
+  const quizEl = document.getElementById('quiz');
+
+  function renderQuiz() {
+    quizEl.innerHTML = '';
+    data.forEach((item, idx) => {
+      const q = document.createElement('div');
+      q.className = 'q';
+      const h = document.createElement('h3');
+      h.innerHTML = (idx+1) + '. ' + item.q;
+      q.appendChild(h);
+      item.choices.forEach((c, ci) => {
+        const label = document.createElement('label');
+        label.className = 'opt';
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'q' + idx;
+        input.value = ci;
+        label.appendChild(input);
+        const span = document.createElement('span');
+        span.textContent = c;
+        label.appendChild(span);
+        q.appendChild(label);
+      });
+      quizEl.appendChild(q);
+    });
+  }
+
+  function evaluate() {
+    const answers = [];
+    let correct = 0;
+    data.forEach((item, idx) => {
+      const selected = document.querySelector('input[name="q'+idx+'"]:checked');
+      const chosen = selected ? parseInt(selected.value) : null;
+      const isCorrect = chosen === item.answer;
+      answers.push({ chosen, isCorrect });
+      if (isCorrect) correct++;
+    });
+    const total = data.length;
+    const percent = Math.round((correct/total)*100);
+
+    // paint correctness
+    const cards = document.querySelectorAll('.q');
+    cards.forEach((card, idx) => {
+      card.classList.remove('correct','incorrect');
+      const a = answers[idx];
+      if (a.chosen === null) return;
+      card.classList.add(a.isCorrect ? 'correct' : 'incorrect');
+
+      // add explanation
+      let exp = card.querySelector('.exp');
+      if (!exp) {
+        exp = document.createElement('div');
+        exp.className = 'muted exp';
+        exp.style.marginTop = '8px';
+        card.appendChild(exp);
+      }
+      const correctText = data[idx].choices[data[idx].answer];
+      exp.innerHTML = `<span class="badge">เฉลย</span> ข้อที่ถูก: <b>${['ก','ข','ค','ง','จ','ฉ','ช','ซ'][data[idx].answer]||('ตัวเลือก '+(data[idx].answer+1))}</b> — “${correctText}”<br><span class="badge k">อธิบาย</span> ${data[idx].explain}`;
+    });
+
+    const correctList = answers.map((a, i) => a.isCorrect ? (i+1) : null).filter(x=>x!==null);
+    const wrongList = answers.map((a, i) => (!a.isCorrect ? (i+1) : null)).filter(x=>x!==null);
+
+    const res = document.getElementById('result');
+    res.style.display = 'block';
+    res.innerHTML = `
+      <div style="font-size:18px; margin-bottom:6px"><b>ผลคะแนน</b></div>
+      <div>ถูก <span class="ok">${correct}</span> / ${total} ข้อ (<b>${percent}%</b>) • ผิด <span class="bad">${total-correct}</span> ข้อ</div>
+      <div style="margin-top:8px">ข้อที่ถูก: ${correctList.length? correctList.join(', ') : '-'}</div>
+      <div>ข้อที่ผิด: ${wrongList.length? wrongList.join(', ') : '-'}</div>
+    `;
+    window.scrollTo({top: res.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth'});
+  }
+
+  document.getElementById('submit').addEventListener('click', evaluate);
+  document.getElementById('reset').addEventListener('click', () => location.reload());
+  document.getElementById('scrollTop').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  renderQuiz();
+  </script>
+</body>
+</html>
